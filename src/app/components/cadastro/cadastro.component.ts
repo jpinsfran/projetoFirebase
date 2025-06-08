@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class CadastroComponent {
 
+  name: string = '';
+  email: string ='';
+  password: string = '';
+  confirmPassword: string = '';
+  
 }

@@ -1,1 +1,52 @@
-<p>login works!</p>
+<div class="page">
+    <div class="body min-h-screen flex justify-center items-center">
+        <div class="caixa col-4 w-10/12 max-w-md">
+            <div class="card-shadow">
+                <div class="card-body p-8 rounded-2xl border-solid border-2 border-black">
+                    <div class="flex justify-center">
+                        <img src="../../../assets/logos/asimoviesWhite.png" alt="Logo" class="h-14 mb-8">
+                    </div>
+                    <form>
+                        <div class="mb-4">
+                            <label for="email" class="form-label ml-1">E-mail</label>
+                            <input type="email" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg mt-1" id="email" [(ngModel)]="email" name="email" placeholder="E-mail" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label ml-1">Senha</label>
+                            <input type="password" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg mt-1" id="password" [(ngModel)]="password" name="password" placeholder="Senha" required>
+                        </div>
+                        <div class="flex justify-between mb-4 items-center">
+                            <div class="flex items-center ml-1">
+                                <input type="checkbox" id="rememberMe" [(ngModel)]="rememberMe" name="rememberMe" class="mr-2 mt-2">
+                                <label for="rememberMe" class="text-sm mt-2">Lembrar-me</label>
+                            </div>
+                            <a href="../recuperar-senha" class="text-sm hover:underline mr-1">Esqueceu sua senha?</a>
+                        </div>
+                        <div class="inputs">
+                            <button type="submit" class="w-full bg-back-blue text-white py-2 rounded-lg bg-black hover:shadow-lg transition-shadow duration-200">
+                                Entrar
+                            </button>
+                        </div>
+                    </form>
+                    <div class="flex justify-center items-center mt-4">
+                        <button (click)="cadastrar()" type="button" class="w-full bg-white border border-gray-300 text-gray-800 py-2 rounded-lg hover:bg-gray-100">
+                            Cadastre-se
+                        </button>
+                    </div>
+                    <div class="flex justify-center items-center mt-4">
+                        <div class="border-t w-5/12"></div>
+                        <span class="mx-2">Ou</span>
+                        <div class="border-t w-5/12"></div>
+                    </div>
+                    <div class="inputs mt-4">
+                        <button type="button" class="w-full bg-white border border-gray-300 py-2 rounded-lg text-gray-800 hover:bg-gray-100">
+                            <img src="../../../assets/icons/icons8-google-48.png" alt="Google Logo" class="inline mr-2" style="width: 20px;">
+                            Entre com Google
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  

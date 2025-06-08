@@ -1,1 +1,41 @@
-<p>cadastro works!</p>
+<div class="page">
+    <div class="body min-h-screen flex justify-center items-center">
+        <div class="caixa col-4 w-10/12 max-w-md">
+            <div class="card-shadow">
+                <div class="card-body p-8 rounded-2xl border-solid border-2 border-black">
+                    <div class="flex justify-center mb-4">
+                        <img src="../../../assets/logos/asimoviesWhite.png" alt="Logo" class="h-14 mb-8">
+                    </div>
+                    <form>
+                        <div class="mb-4">
+                            <label for="name" class="form-label ml-1">Nome Completo</label>
+                            <input type="text" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg mt-1" id="name" [(ngModel)]="name" name="name" placeholder="Nome">
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="form-label ml-1">E-mail</label>
+                            <input type="email" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg mt-1" id="email" [(ngModel)]="email" name="email" placeholder="E-mail">
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label ml-1">Senha</label>
+                            <input type="password" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg mt-1" id="password" [(ngModel)]="password" name="password" placeholder="Senha">
+                        </div>
+                        <div class="mb-4">
+                            <label for="confirmPassword" class="form-label ml-1">Confirme a senha</label>
+                            <input type="password" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg mt-1" id="confirmPassword" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Confirmar Senha">
+                        </div>
+                        <div class="mt-10">
+                            <button type="submit" class="w-full bg-black border text-white py-2 rounded-lg hover:shadow-lg transition-shadow duration-200">
+                                Cadastre-se
+                            </button>
+                        </div>
+                        <div class="flex justify-center items-center mt-6 mb-2">
+                            <div class="text-sm">Já possui uma conta?
+                                <a href="../" class="hover:underline">Entrar</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

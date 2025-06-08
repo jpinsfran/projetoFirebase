@@ -1,1 +1,36 @@
-<p>recuperar-senha works!</p>
+<div *ngIf="modalVerification" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-title">
+            <img src="../../../assets/logos/asimoviesWhiteLogo.png">
+            Redefinir Senha
+        </div>
+        <div class="modal-text">Verifique o seu email para redefinir a sua senha.</div>
+        <div class="modal-buttons">
+            <button class="modal-cancel" (click)="closeModal()">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<div class="page">
+    <body class="flex items-center justify-center min-h-screen">
+        <div class="bg-white p-6 px-2 border-solid border-2 border-black rounded-2xl max-w-md w-100">
+            <img src="../../../assets/icons/recuperar.png" alt="Logo" class="mx-auto mb-4">
+            <div class="msg text-center text-lg mb-4 font-bold">Problemas para entrar?</div>
+            <div class="texto text-center text-gray-700 mb-4 text-xs">Entre com o seu e-mail e nós enviaremos um link para você voltar à sua conta.</div>
+            <div class="mb-4 px-5">
+                <input type="email" class="form-control placeholder-gray-500" id="email" [(ngModel)]="email" name="email" placeholder="E-mail">
+            </div>
+            <div class="mb-4 px-5">
+                <button (click)="openModal()" class="w-full bg-black text-white px-4 py-2 rounded">Enviar link</button>
+            </div>
+            <div class="flex justify-center items-center mt-4">
+                <div class="border-t w-5/12"></div>
+                <span class="mx-2">Ou</span>
+                <div class="border-t w-5/12"></div>
+            </div>
+            <div class="text-center mt-4 mb-4">
+                <a href="../cadastro" class="text-black hover:underline">Crie uma nova conta</a>
+            </div>
+        </div>
+    </body>
+</div>
