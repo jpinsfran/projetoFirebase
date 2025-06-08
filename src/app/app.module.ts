@@ -10,13 +10,23 @@ import { AngularFireAuthModule} from '@angular/fire/compat/auth';
 import { CadastroComponent } from './components/cadastro/cadastro.component';
 import { RecuperarSenhaComponent } from './components/recuperar-senha/recuperar-senha.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HomeComponent } from './components/home/home.component';
+import { HeaderComponent } from './shared/components/header/header.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { AddMovieComponent } from './shared/components/add-movie/add-movie.component';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     CadastroComponent,
-    RecuperarSenhaComponent
+    RecuperarSenhaComponent,
+    HomeComponent,
+    HeaderComponent,
+    FooterComponent,
+    AddMovieComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +35,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AngularFireAuthModule,
     FormsModule,
     ReactiveFormsModule,
+    AngularFireStorageModule,
+    AngularFirestoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]

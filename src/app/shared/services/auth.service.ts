@@ -23,7 +23,7 @@ export class AuthService {
 
       if(user){
         const userData: UserInterface = {
-          nome: name,
+          name: name,
           email: email,
           tipo: 'Usuário'
         }

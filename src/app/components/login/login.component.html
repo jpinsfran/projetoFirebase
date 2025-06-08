@@ -6,7 +6,7 @@
                     <div class="flex justify-center">
                         <img src="../../../assets/logos/asimoviesWhite.png" alt="Logo" class="h-14 mb-8">
                     </div>
-                    <form>
+                    <form (ngSubmit)="login()">
                         <div class="mb-4">
                             <label for="email" class="form-label ml-1">E-mail</label>
                             <input type="email" class="form-control placeholder-gray-300 w-full p-2 border rounded-lg mt-1" id="email" [(ngModel)]="email" name="email" placeholder="E-mail" required>

@@ -1,0 +1,95 @@
+<div class="page">
+    <app-header></app-header>
+  
+    <body>
+        <div class="search">
+            <div class="search-title">AsiMovies</div>
+            <div class="search-bar">
+              <input
+                type="text"
+                placeholder="Pesquisar Filme..."
+                class="search-input"
+                [(ngModel)]="searchQuery"
+                (input)="filterMovies()"
+              >
+              <button type="button" class="search-button" (click)="filterMovies()">🔍</button>
+            </div>
+            
+            <button type="button" class="add-button" (click)="toggleAddMovieModal()">Adicionar Filme</button>
+        </div>
+  
+        <div class="cards">
+          <button 
+            type="button" 
+            class="scroll" 
+            (click)="showPrevious()"
+            [ngClass]="{ 'disabled': currentOffset <= 0 }">
+            &lt;
+          </button>
+        
+          <div *ngFor="let movie of displayedMovies" class="card group">
+            <!-- Icone de tres pontinhos (aparece ao passar o mouse) -->
+            <div class="absolute top-2 right-2 hidden group-hover:block">
+              <div class="relative">
+                <button class="text-3xl text-gray-500 hover:text-gray-700 focus:outline-none">
+                  &#x22EE; <!-- Unicode dos três pontinhos verticais -->
+                </button>
+
+
+                <!-- Dropdown (oculto até que seja clicado) -->
+                <div class="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg hidden group-focus-within:block">
+                  <ul>
+                    <li>
+                      <button (click)="deleteMovie(movie.id)" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <i class="fas fa-trash-alt mr-2"></i> Excluir
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+        
+            <!-- Conteúdo do card -->
+            <div class="photo">
+              <img *ngIf="movie.photo_path" [src]="movie.photo_path" alt="Card image">
+              <img *ngIf="!movie.photo_path" src="../../../assets/imgs/padrao.jpg" alt="">
+            </div>
+  
+            <div class="card-content">
+              <h2>{{ movie.name }}</h2>
+              <p>{{ movie.analysis }}</p>
+  
+              <!-- Avaliação com Estrelas -->
+              <div class="rating">
+                <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+                  <i class="fa-star" 
+                    [class.fas]="star <= movie.rating" 
+                    [class.far]="star > movie.rating"></i>
+                </ng-container>
+              </div>
+            </div>
+  
+            <div class="footer">
+              <img src="../../../assets/logos/asimoviesWhite.png" alt="logoAsiMovies">
+            </div>
+          </div>
+        
+          <button 
+            type="button" 
+            class="scroll" 
+            (click)="showNext()"
+            [ngClass]="{ 'disabled': currentOffset + limit >= movies.length }">
+            &gt;
+          </button>
+        </div>
+  
+  
+    </body>
+    
+    <app-footer></app-footer>
+  
+    <app-add-movie *ngIf="showAddMovieModal" (closeModal)="toggleAddMovieModal()"></app-add-movie>
+  </div>
+  
+  

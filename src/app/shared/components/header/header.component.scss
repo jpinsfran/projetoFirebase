@@ -1,0 +1,240 @@
+header {
+    height: 85px;
+    padding: 15px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .logoEfrase{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .logo {
+            width: 55px;
+            height: 55px;
+            cursor: pointer;
+            margin-right: 50px;
+            transition: transform 0.2s ease-in-out;
+
+            &:hover {
+                transform: scale(1.2);
+            }
+        }
+
+        .frase-rotativa {
+            font-size: 18px;
+            font-weight: 800;
+            color: black;
+            opacity: 0; /* Começa invisível */
+            animation: fade-in 0.4s ease-in-out forwards; /* Animação suave */
+        }
+
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+                 /* Sobe levemente no início */
+            }
+            100% {
+                opacity: 1;
+                 /* Volta à posição normal */
+            }
+        }
+
+
+    }
+    
+}
+
+.menu-direita {
+    display: flex;
+    align-items: center;
+}
+
+.dropdown {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    margin-right: 100px;
+    z-index: 2;
+}
+
+.foto-perfil {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.nome-usuario {
+    font-weight: 800;
+    font-size: 18px;
+    color: black;
+}
+
+.icon-seta {
+    width: 15px;
+    height: 15px;
+    margin-left: 15px !important;
+}
+
+.linha-divisoria {
+    width: 1px;
+    height: 85px;
+    background-color: black; /* cor da linha */
+    margin: 0 15px; /* espaçamento entre os elementos */
+}
+
+
+
+.dropdown-conteudo {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px; /* bordas arredondadas */
+    padding: 15px 20px; /* mais espaço interno */
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    min-width: 160px; /* largura mínima para um layout mais uniforme */
+}
+
+.dropdown-conteudo a {
+    font-size: 16px;
+    color: black;
+    padding: 10px 0;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease, background-color 0.3s ease, padding 0.3s ease;
+}
+
+.dropdown-conteudo a:not(:last-child) {
+    border-bottom: 1px solid #e0e0e0; /* linha entre os itens, exceto o último */
+}
+
+.dropdown-conteudo a:hover {
+    color: black; /* destaque ao passar o mouse */
+    background-color: #f0f4ff; /* leve fundo azul-claro no hover */
+    border-radius: 4px; /* bordas arredondadas ao hover */
+    padding: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.modal-overlay {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 1000; 
+}
+
+.modal-content {
+    background-color: white; 
+    border-radius: 8px; 
+    padding: 20px; 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
+    width: 33%;
+    max-height: 60%;
+}
+
+.modal-title {
+    font-size: 25px;
+    color: #070C26;
+    font-weight: 700;
+    margin: 10px 0; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    img {
+        margin: 0 auto;
+        width: 45px;
+        height: 45px;
+        margin-bottom: 20px;
+    }
+}
+
+.modal-text {
+    margin: 10px 0; 
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-input {
+    margin: 0 auto;
+    font-size: 15px;
+    border: 1px solid #AB9B9B;
+    padding: 5px;
+    border-radius: 5px;
+    width: 90%;
+    outline: none;
+    
+}
+
+.icon-seta {
+    font-size: 14px;
+    margin-left: 5px;
+    color: black;
+}
+
+.modal-buttons {
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    margin: 10px 0;
+
+    .modal-confirm {
+        margin: 3px 0;
+        color: white; 
+        background-color: black;
+        border: none; 
+        border-radius: 10px; 
+        width: 25%;
+        padding: 5px 10px; 
+        cursor: pointer; 
+        outline: none;
+
+    }
+
+    .modal-cancel {
+        margin: 3px 0;
+        color: white; 
+        background-color:#D90000;
+        border: none; 
+        border-radius: 10px; 
+        width: 25%;
+        padding: 5px 10px; 
+        cursor: pointer; 
+        outline: none;
+        margin-right: 5px;
+    }
+}
+.modal-message {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    font-size: 20px;
+    color: #070C26; 
+}
