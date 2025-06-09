@@ -26,5 +26,9 @@ export class CadastroComponent {
       alert("Preencha todos os campos!");
     }
   }
+  loginWithGoogle() {
+    this.auth.loginWithGoogle();
+  }
+
   
 }

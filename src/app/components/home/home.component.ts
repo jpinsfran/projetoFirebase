@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MovieInterface } from '../../shared/interfaces/movie-interface';
 import { DatabaseService } from '../../shared/services/database.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -12,19 +13,28 @@ export class HomeComponent {
   // VARIÁVEIS
 
   showAddMovieModal: boolean = false; // controle de exibição do modal de adição de filme
+  showEditMovieModal: boolean = false;
+
   searchQuery: string = ''; // controle de pesquisa de filmes
+
   displayedMovies: MovieInterface[] = []; // filmes exibidos na tela
   movies: MovieInterface[] = [];
+
   limit: number = 4; // 4 filmes no maximo por vez
   currentOffset: number = 0; // controle de visualização de filmes
 
-  constructor(private databaseService: DatabaseService) {}
+  movieToEdit!: MovieInterface;
+
+  constructor(private databaseService: DatabaseService, private router: Router) {}
 
   ngOnInit(){
-    this.databaseService.getCollection('movies').subscribe((movies: MovieInterface[])=>{
+    this.getMovies();
+  }
+  getMovies() {
+    this.databaseService.getCollection('movies').subscribe((movies: MovieInterface[]) => {
       this.movies = movies;
-      this.displayedMovies = this.movies.slice(this.currentOffset, this.currentOffset + this.limit); // exibe os 4 filmes iniciais
-    })
+      this.updateDisplayedMovies();
+    });
   }
 
   deleteMovie(id:string){
@@ -33,6 +43,30 @@ export class HomeComponent {
     }).catch(error=>{
       console.log(error)
     })
+  }
+  openEditModal(movie: MovieInterface) {
+    this.movieToEdit = { ...movie }; // cria cópia para editar
+    this.showEditMovieModal = true;
+  }
+
+  closeEditModal() {
+    this.showEditMovieModal = false;
+  }
+
+  onUpdateMovie(updatedMovie: MovieInterface): void {
+    this.databaseService.updateDocument('movies', updatedMovie.id, updatedMovie)
+      .then(() => {
+        console.log('Filme atualizado com sucesso!');
+        this.closeEditModal();
+        this.getMovies(); // Recarrega a lista
+      })
+      .catch(err => {
+        console.error('Erro ao atualizar o filme:', err);
+      });
+  }
+
+  updateDisplayedMovies(): void {
+    this.displayedMovies = this.movies.slice(this.currentOffset, this.currentOffset + this.limit);
   }
 
   toggleAddMovieModal(){
@@ -74,6 +108,7 @@ export class HomeComponent {
       this.displayedMovies = this.movies.slice(this.currentOffset, this.currentOffset + this.limit);
     }
   }
+
 }
 
 

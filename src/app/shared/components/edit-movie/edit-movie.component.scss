@@ -1,0 +1,84 @@
+$black: black;
+$white: #ffffff;
+$red: #D90000;
+$gray: #e5e5e5;
+
+// Estilos principais
+#createCategoryModal {
+  .bg-white {
+    background-color: $white;
+  }
+
+  .text-black {
+    color: $black;
+  }
+
+  .text-red-600 {
+    color: $red;
+  }
+
+  .modal-title{
+    font-size: 22px;
+  }
+
+  .text-black-300 {
+    color: $black;
+  }
+
+  .rounded-lg {
+    border-radius: 12px;
+  }
+
+  textarea{
+    height: 150px;
+  }
+
+  .input-field {
+    background-color: $white;
+    color: black;
+    border: 1px solid $black;
+    padding: 0.5rem;
+    width: 100%;
+    border-radius: 8px;
+    transition: border 0.2s ease-in-out;
+
+    &:focus {
+      border-color: $black;
+      outline: none;
+    }
+  }
+
+  .btn-primary {
+    background-color: $black;
+    color: $white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: darken($black, 10%);
+    }
+  }
+
+  .btn-disabled {
+    background-color: #d1d5db !important; /* Cinza claro */
+    color: #6b7280 !important; /* Cinza escuro */
+    cursor: not-allowed !important;
+  }
+
+
+  .inserir-imagem{
+    text-decoration: underline;
+  }
+
+  .img-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+}

@@ -16,6 +16,8 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { AddMovieComponent } from './shared/components/add-movie/add-movie.component';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { EditMovieComponent } from './shared/components/edit-movie/edit-movie.component';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     HomeComponent,
     HeaderComponent,
     FooterComponent,
-    AddMovieComponent
+    AddMovieComponent,
+    EditMovieComponent,
   ],
   imports: [
     BrowserModule,

@@ -4,6 +4,8 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { UserInterface } from '../interfaces/user-interface';
 import { Observable, of, switchMap } from 'rxjs';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -65,6 +67,34 @@ export class AuthService {
     })
 
   }
+
+  loginWithGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+
+  this.auth
+    .signInWithPopup(provider) // Aqui o provider é do compat!
+    .then((userCredential) => {
+      const user = userCredential.user;
+      if (user) {
+        const userData: UserInterface = {
+          name: user.displayName || 'Sem Nome',
+          email: user.email || '',
+          tipo: 'usuário'
+        };
+        this.firestore.doc(`users/${user.uid}`).set(userData, { merge: true })
+          .then(() => this.router.navigate(['/home']));
+      }
+    })
+    .catch(error => {
+      console.error('Erro ao logar com o Google:', error);
+    });
+  }
+
+
+
+
+
   getUserData(): Observable<any>{
     return this.auth.authState.pipe(switchMap(user=>{
       if(user){

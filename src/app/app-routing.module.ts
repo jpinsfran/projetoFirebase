@@ -5,6 +5,7 @@ import { CadastroComponent } from './components/cadastro/cadastro.component';
 import { RecuperarSenhaComponent } from './components/recuperar-senha/recuperar-senha.component';
 import { HomeComponent } from './components/home/home.component';
 
+
 const routes: Routes = [
   {
     path: '', component: LoginComponent,
@@ -17,7 +18,7 @@ const routes: Routes = [
   },
   {
     path: 'home', component: HomeComponent,
-  }
+  },
 ];
 
 @NgModule({

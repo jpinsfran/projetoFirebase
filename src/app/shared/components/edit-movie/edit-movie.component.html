@@ -1,0 +1,73 @@
+<div class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+  <div class="bg-white text-black rounded-lg shadow-lg w-full max-w-2xl">
+    <div class="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+      <h5 class="modal-title">Editar Filme</h5>
+      <button class="text-red-600 text-xl" (click)="onClose()">&times;</button>
+    </div>
+
+    <div class="p-4">
+      <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          
+          <!-- Imagem -->
+          <div class="flex flex-col justify-center items-center mb-4">
+            <div class="img-placeholder w-32 h-48 border border-gray-300 overflow-hidden flex items-center justify-center">
+              <img *ngIf="previewUrl || movie.photo_path; else placeholder" [src]="previewUrl || movie.photo_path" alt="Imagem do filme" class="object-cover w-full h-full">
+              <ng-template #placeholder>
+                <img src="../../../../assets/icons/movie.png" alt="Imagem padrão" class="object-contain w-16 h-16 opacity-60">
+              </ng-template>
+            </div>
+            <label class="inserir-imagem text-black-300 cursor-pointer hover:underline mt-2" for="photo">Alterar Imagem</label>
+            <input type="file" accept=".png, .jpg, .jpeg" id="photo" class="hidden" (change)="onFileSelected($event)">
+          </div>
+
+          <!-- Título e Descrição -->
+          <div>
+            <!-- Nome -->
+            <div class="mb-4">
+              <label for="title" class="block text-sm font-medium">Nome*</label>
+              <input
+                type="text"
+                id="title"
+                formControlName="name"
+                placeholder="Nome"
+                class="input-field"
+                required
+              />
+            </div>
+
+            <!-- Nota -->
+            <div class="mb-8 mt-4">
+              <label class="block text-sm font-medium">Nota*</label>
+              <div class="flex justify-center space-x-1 text-gray-400 cursor-pointer mt-2">
+                <i class="fa fa-star text-2xl" [class.text-yellow-500]="editForm.value.rating >= 1" (click)="setRating(1)"></i>
+                <i class="fa fa-star text-2xl" [class.text-yellow-500]="editForm.value.rating >= 2" (click)="setRating(2)"></i>
+                <i class="fa fa-star text-2xl" [class.text-yellow-500]="editForm.value.rating >= 3" (click)="setRating(3)"></i>
+                <i class="fa fa-star text-2xl" [class.text-yellow-500]="editForm.value.rating >= 4" (click)="setRating(4)"></i>
+                <i class="fa fa-star text-2xl" [class.text-yellow-500]="editForm.value.rating >= 5" (click)="setRating(5)"></i>
+              </div>
+              <input type="hidden" formControlName="rating">
+            </div>
+
+            <!-- Análise -->
+            <div class="mb-4">
+              <label for="description" class="block text-sm font-medium">Análise*</label>
+              <textarea
+                id="description"
+                placeholder="Análise"
+                formControlName="analysis"
+                class="input-field"
+                required
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botões -->
+        <div class="flex justify-end border-t border-gray-200 pt-3 space-x-2">
+          <button type="submit" class="btn-primary" [disabled]="editForm.invalid">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
