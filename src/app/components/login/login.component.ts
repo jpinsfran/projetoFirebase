@@ -1,6 +1,7 @@
+// src/app/components/login/login.component.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthService } from '../../shared/services/auth.service'; // OK
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ export class LoginComponent {
   password: string = '';
   rememberMe: boolean = false;
 
-  constructor (private router: Router, private auth:AuthService) { }
+  constructor (private router: Router, private auth:AuthService) { } // OK
 
   cadastrar () {
     this.router.navigate(['/cadastro']);
@@ -27,9 +28,11 @@ export class LoginComponent {
     }
   }
 
+  // Função para chamar o login com Google
   loginWithGoogle() {
-    this.auth.loginWithGoogle();
+    this.auth.loginWithGoogle().catch(error => { // Adicione .catch para lidar com erros aqui também
+      console.error('Erro no componente ao tentar login com Google:', error);
+      // O alert já será exibido no service, mas você pode adicionar lógica extra aqui se precisar
+    });
   }
-
-
 }

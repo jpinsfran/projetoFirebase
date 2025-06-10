@@ -39,7 +39,7 @@ import { EditMovieComponent } from './shared/components/edit-movie/edit-movie.co
     FormsModule,
     ReactiveFormsModule,
     AngularFireStorageModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
