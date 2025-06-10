@@ -1,13 +1,12 @@
-// src/app/shared/services/auth.service.ts
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
-import { UserInterface } from '../interfaces/user-interface'; // Certifique-se que o caminho está correto
-import { Observable, of } from 'rxjs'; // 'of' é usado se o user for null
-import { switchMap } from 'rxjs/operators';
-import firebase from 'firebase/compat/app'; // Necessário para GoogleAuthProvider
-import 'firebase/compat/auth'; // Necessário para GoogleAuthProvider
+import { UserInterface } from '../interfaces/user-interface';
+import { Observable, of } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators'; // Certifique-se de importar 'map'
+import firebase from 'firebase/compat/app'; // Necessário para firebase.auth.GoogleAuthProvider()
+import 'firebase/compat/auth'; // Necessário para firebase.auth.GoogleAuthProvider()
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +31,7 @@ export class AuthService {
   async cadastro(name: string, email: string, password: string, confirmPassword: string): Promise<void> {
     if (password !== confirmPassword) {
       alert("As senhas não coincidem!");
-      throw new Error("As senhas não coincidem!"); // Lança um erro para que o catch seja acionado no componente
+      throw new Error("As senhas não coincidem!");
     }
 
     try {
@@ -43,16 +42,16 @@ export class AuthService {
         const userData: UserInterface = {
           name: name,
           email: email,
-          tipo: 'Usuário' // Padronizado para 'Usuário' (com U maiúsculo)
+          tipo: 'Usuário'
         };
 
         await this.salvarDados(user.uid, userData);
-        await user.sendEmailVerification(); // Agora usa await para garantir que o e-mail seja enviado
+        await user.sendEmailVerification();
         alert('Cadastro realizado com sucesso! Um e-mail de verificação foi enviado. Por favor, verifique sua caixa de entrada.');
-        await this.auth.signOut(); // Usa await para garantir o logout
-        this.router.navigate(['/login']); // Redireciona para o login após cadastro e envio de verificação
+        await this.auth.signOut();
+        this.router.navigate(['/login']);
       } else {
-        throw new Error('Usuário não criado após cadastro.'); // Caso userCredential.user seja nulo inesperadamente
+        throw new Error('Usuário não criado após cadastro.');
       }
     } catch (error: any) {
       console.error('Erro no cadastro:', error);
@@ -73,7 +72,7 @@ export class AuthService {
         }
       }
       alert(errorMessage);
-      throw error; // Propaga o erro para o componente
+      throw error;
     }
   }
 
@@ -84,7 +83,7 @@ export class AuthService {
    * @returns Promise<void>
    */
   salvarDados(id: string, user: UserInterface): Promise<void> {
-    return this.firestore.collection('users').doc(id).set(user, { merge: true }); // Usar merge: true para não sobrescrever outros campos
+    return this.firestore.collection('users').doc(id).set(user, { merge: true });
   }
 
   /**
@@ -101,12 +100,12 @@ export class AuthService {
 
       if (user) {
         if (user.emailVerified) {
-          alert(`Bem-vindo, ${user.displayName || user.email}!`); // Feedback de sucesso
+          alert(`Bem-vindo, ${user.displayName || user.email}!`);
           this.router.navigate(['/home']);
         } else {
           alert('Por favor, verifique seu e-mail antes de fazer login. Um novo e-mail de verificação pode ter sido enviado.');
-          await user.sendEmailVerification(); // Reenvia o e-mail de verificação caso o usuário tente logar sem verificar
-          await this.auth.signOut(); // Desloga o usuário se o e-mail não for verificado
+          await user.sendEmailVerification();
+          await this.auth.signOut();
         }
       } else {
         throw new Error('Não foi possível obter os dados do usuário após o login.');
@@ -118,7 +117,7 @@ export class AuthService {
         switch (error.code) {
           case 'auth/wrong-password':
           case 'auth/user-not-found':
-          case 'auth/invalid-credential': // Novo código de erro comum em versões mais recentes do Firebase
+          case 'auth/invalid-credential':
             errorMessage = 'E-mail ou senha incorretos.';
             break;
           case 'auth/invalid-email':
@@ -132,7 +131,7 @@ export class AuthService {
         }
       }
       alert(errorMessage);
-      throw error; // Propaga o erro para o componente
+      throw error;
     }
   }
 
@@ -142,42 +141,56 @@ export class AuthService {
    * @returns Promise<any> que resolve com o userCredential ou rejeita em erro.
    */
   async loginWithGoogle(): Promise<any> {
+    // 1. Instanciar o provedor de autenticação do Google
     const provider = new firebase.auth.GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' }); // Força a seleção de conta, útil para multi-contas
+
+    // 2. Opcional: Definir parâmetros personalizados (útil para forçar seleção de conta)
+    provider.setCustomParameters({ prompt: 'select_account' });
 
     try {
+      // 3. Chamar o método signInWithPopup e aguardar o resultado
       const userCredential = await this.auth.signInWithPopup(provider);
-      const user = userCredential.user;
+      const user = userCredential.user; // O objeto user do Firebase Auth
 
+      // 4. Verificar se o usuário foi obtido com sucesso
       if (user) {
         console.log('Login com Google bem-sucedido!', user.displayName, user.email, user.uid);
 
-        // Verifique se o e-mail está verificado (o Google já verifica o e-mail, mas o Firebase pode ter um flag)
-        // Normalmente, o e-mail vindo do Google já é considerado verificado pelo Firebase.
+        // 5. Verificar se o e-mail do usuário está verificado
+        // Para Google, o e-mail geralmente já vem verificado, mas é uma boa prática
         if (!user.emailVerified) {
-          await user.sendEmailVerification(); // Envia e-mail de verificação se não for verificado (raro para Google)
-          alert('Seu e-mail pode não estar verificado. Um e-mail de verificação foi enviado. Por favor, verifique sua caixa de entrada.');
-          await this.auth.signOut(); // Desloga se não verificado para forçar a verificação (opcional)
-          throw new Error('E-mail não verificado.'); // Lança erro para interromper o fluxo
+          console.warn('E-mail do usuário Google não verificado. Enviando e-mail de verificação...');
+          await user.sendEmailVerification();
+          alert('Seu e-mail Google não está verificado. Um e-mail de verificação foi enviado. Por favor, verifique sua caixa de entrada.');
+          await this.auth.signOut(); // Desloga o usuário se o e-mail não for verificado
+          throw new Error('E-mail não verificado após login com Google.');
         }
 
+        // 6. Preparar os dados do usuário para o Firestore
         const userData: UserInterface = {
           name: user.displayName || 'Sem Nome',
           email: user.email || '',
-          tipo: 'Usuário' // Padronizado para 'Usuário'
+          tipo: 'Usuário' // Definir o tipo padrão para novos usuários do Google
         };
 
-        // Salva/atualiza os dados do usuário no Firestore. Usa merge: true para não sobrescrever outros campos.
+        // 7. Salvar/atualizar os dados do usuário no Firestore
+        // { merge: true } é importante para não sobrescrever outros campos existentes
         await this.firestore.doc(`users/${user.uid}`).set(userData, { merge: true });
         console.log('Dados do usuário Google salvos/atualizados no Firestore.');
 
-        alert(`Bem-vindo, ${user.displayName || user.email}!`); // Feedback de sucesso
+        // 8. Feedback de sucesso e navegação
+        alert(`Bem-vindo, ${user.displayName || user.email}!`);
         this.router.navigate(['/home']);
-        return userCredential; // Retorna o userCredential
+
+        // 9. Retornar o userCredential (opcional, mas pode ser útil para o componente)
+        return userCredential;
       } else {
+        // Se userCredential.user for nulo por algum motivo
         throw new Error('Não foi possível obter os dados do usuário após o login com Google.');
       }
+
     } catch (error: any) {
+      // 10. Tratamento de erros robusto
       console.error('Erro ao fazer login com Google:', error);
       let errorMessage = 'Erro ao fazer login com Google. Por favor, tente novamente.';
 
@@ -195,12 +208,15 @@ export class AuthService {
           case 'auth/account-exists-with-different-credential':
             errorMessage = 'Uma conta com este e-mail já existe com outro método de login (e-mail/senha, Facebook, etc.). Use o método original ou vincule as contas.';
             break;
+          case 'auth/unauthorized-domain': // Este é o erro comum que pode estar disfarçado
+            errorMessage = 'Domínio não autorizado. Verifique as configurações de domínio no Firebase Console.';
+            break;
           default:
-            errorMessage = `Erro no login com Google: ${error.message}`;
+            errorMessage = `Erro de autenticação Google: ${error.message}`;
         }
       }
       alert(errorMessage);
-      throw error; // Propaga o erro
+      throw error; // Propagar o erro para o componente
     }
   }
 
@@ -229,7 +245,7 @@ export class AuthService {
         }
       }
       alert(errorMessage);
-      throw error; // Propaga o erro
+      throw error;
     }
   }
 
@@ -240,26 +256,30 @@ export class AuthService {
   async logout(): Promise<void> {
     try {
       await this.auth.signOut();
-      alert('Você foi desconectado com sucesso.'); // Feedback de sucesso
-      this.router.navigate(['/login']); // Redireciona para a página de login
+      alert('Você foi desconectado com sucesso.');
+      this.router.navigate(['/login']);
     } catch (error: any) {
       console.error('Erro ao fazer logout:', error);
       alert(`Erro ao fazer logout: ${error.message}`);
-      throw error; // Propaga o erro
+      throw error;
     }
   }
 
   /**
    * Observa o estado de autenticação do usuário e busca seus dados no Firestore.
-   * @returns Observable de UserInterface ou null se não houver usuário logado.
+   * Retorna os dados do UserInterface do Firestore, ou null se não houver usuário logado
+   * ou se o documento do usuário não existir no Firestore.
+   * @returns Observable de UserInterface ou null.
    */
-  getUserData(): Observable <any> {
+  getUserData(): Observable<UserInterface | null> {
     return this.auth.authState.pipe(
       switchMap(user => {
-        if (user && user.uid) { // Verifica se há um usuário e UID
-          return this.firestore.collection<UserInterface>('users').doc(user.uid).valueChanges();
+        if (user && user.uid) {
+          return this.firestore.collection<UserInterface>('users').doc(user.uid).valueChanges().pipe(
+            map(firestoreUser => firestoreUser || null)
+          );
         } else {
-          return of(null); // Retorna um observable de null se não houver usuário
+          return of(null);
         }
       })
     );
@@ -270,7 +290,7 @@ export class AuthService {
    * Útil para verificar rapidamente se há um usuário.
    * @returns firebase.User | null
    */
-  getCurrentUser(): any {
+  getCurrentUser(): Promise<firebase.User | null> {
     return this.auth.currentUser;
   }
 }

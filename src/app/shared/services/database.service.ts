@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { UserInterface } from '../interfaces/user-interface';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs'; // Adicione 'from' se não estiver lá
 import { finalize } from 'rxjs/operators';
-import { compilePipeFromMetadata } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -37,8 +35,9 @@ export class DatabaseService {
     return this.db.collection(collection).doc(id).delete();
   }
 
+  // Mantenha esta função uploadImage como está, pois ela retorna um Observable<string>
   uploadImage(file: File, path: string): Observable<string> {
-    const filePath = `${path}/${Date.now()}_${file.name}`;
+    const filePath = `${path}/${Date.now()}_${file.name}`; // Garante nome único no Storage
     const fileRef = this.storage.ref(filePath);
     const task = this.storage.upload(filePath, file);
 
@@ -52,5 +51,16 @@ export class DatabaseService {
         })
       ).subscribe();
     });
+  }
+
+  /**
+   * Deleta uma imagem do Firebase Storage dado o URL de download completo.
+   * @param downloadUrl O URL completo da imagem a ser deletada.
+   * @returns Promise<void>
+   */
+  deleteImageByUrl(downloadUrl: string): Promise<void> {
+    // AngularFireStorage refFromURL retorna uma AngularFireStorageReference
+    // cujo método delete() retorna um Observable<void>. Usamos .toPromise() para await.
+    return this.storage.refFromURL(downloadUrl).delete().toPromise();
   }
 }
